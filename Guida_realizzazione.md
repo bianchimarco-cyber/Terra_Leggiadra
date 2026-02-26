@@ -4,7 +4,6 @@ Puoi salvare questo contenuto in un file chiamato **GUIDA.md** nella cartella pr
 
 ---
 
-```markdown
 # 📘 Guida alla Realizzazione: AgroManager v1.0
 
 Questa guida ti accompagna passo dopo passo nella creazione della tua webapp per la gestione olivicola.
@@ -311,4 +310,3 @@ docker-compose up -d --build
 
 ```
 
-```
