@@ -1,33 +1,110 @@
-# AgroManager – Gestionale Agricolo Smart 🌿
+# 🫒 AgroManager v1.0 — Gestionale Olivicolo
 
-**AgroManager** è una webapp nata per semplificare la gestione economica e produttiva delle aziende olivicole. Trasforma i dati grezzi di campo e frantoio in indicatori chiari per ottimizzare i profitti e capire la reale redditività della stagione.
+Webapp completa per la gestione economica e produttiva delle aziende olivicole.  
+Stack: **PHP 8.2 + MySQL 8 + Apache** su Docker.
 
+---
 
+## 🚀 Avvio Rapido
 
-## 🚀 Funzionalità Principali
+### Prerequisiti
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installato
 
-### 💰 Controllo Totale dei Costi
-Monitoraggio analitico di ogni voce di spesa per appezzamento o per stagione:
-- **Input Tecnici:** Concimi, fitofarmaci e sementi.
-- **Logistica e Mezzi:** Consumo gasolio agricolo e manutenzione attrezzature.
-- **Servizi Esterni:** Costi di contro terzi.
+### 1. Avvia l'applicazione
+```bash
+# Dalla cartella AgroManager/
+docker-compose up -d --build
+```
 
-### 🚜 Gestione Produzione e Rese
-- **Raccolta:** Registrazione dei kg di olive prodotti per singolo campo.
-- **Frantoio:** Inserimento delle rese in olio (%) e calcolo immediato dei litri prodotti.
-- **Magazzino:** Tracciabilità del prodotto finito pronto per la vendita.
+### 2. Aspetta ~15 secondi per l'inizializzazione del database
 
-### 📈 Analisi Economica Avanzata
-- **Margine Reale:** Calcolo del profitto netto sottraendo i costi totali dal ricavato delle vendite.
-- **Punto di Pareggio:** Identificazione automatica del prezzo minimo di vendita per non andare in perdita.
+### 3. Apri il browser
+```
+http://localhost:8080
+```
 
+---
 
+## 🛑 Comandi Utili
 
-## ✨ Funzioni "Smart" Distintive
+```bash
+# Ferma i container
+docker-compose down
 
+# Ferma e cancella il database (reset completo)
+docker-compose down -v
 
+# Vedi i log in tempo reale
+docker-compose logs -f
 
-* **Calcolo Costo/Litro:** Sistema automatico che ripartisce i costi fissi e variabili sulla produzione totale.
-* **Simulatore Decisionale:** *"Conviene vendere olive o fare olio?"* – Un algoritmo confronta il prezzo di mercato delle olive al quintale con la tua resa stimata e i costi di molitura per suggerirti la strategia più vantaggiosa.
-* **Andamento Storico:** Grafici comparativi tra le diverse stagioni per analizzare fluttuazioni di resa e margini.
+# Riavvia dopo modifiche al codice PHP
+# (Non necessario — i file sono montati come volume)
+# Basta ricaricare la pagina!
+```
 
+---
+
+## 📁 Struttura del Progetto
+
+```
+AgroManager/
+├── docker-compose.yml      # Orchestrazione container
+├── Dockerfile              # Build immagine PHP+Apache
+├── init.sql                # Schema DB + dati demo
+└── src/
+    ├── index.php           # Interfaccia principale (SPA)
+    ├── db_connect.php      # Connessione MySQL condivisa
+    ├── api/
+    │   ├── simulatore.php          # Calcoli strategia olive/olio
+    │   ├── save_costo.php          # Salvataggio spese
+    │   ├── save_produzione.php     # Salvataggio raccolte
+    │   ├── save_vendita.php        # Salvataggio vendite
+    │   ├── get_dashboard_data.php  # KPI + dati aggregati
+    │   ├── get_costi_list.php      # Lista spese
+    │   ├── get_produzione_list.php # Lista produzioni
+    │   └── get_vendite_list.php    # Lista vendite
+    ├── css/
+    │   └── style.css       # Design system Terra & Oro
+    └── js/
+        └── script.js       # Frontend SPA logic
+```
+
+---
+
+## ✨ Funzionalità
+
+| Sezione | Descrizione |
+|---------|-------------|
+| 📊 Dashboard | KPI stagionali, andamento storico, ultime spese, punto di pareggio |
+| ✨ Simulatore | "Olive o Olio?" — calcolo automatico convenienza |
+| 💰 Costi | Registro spese per categoria (Input Tecnici, Logistica, Terzi) |
+| 🚜 Produzione | Raccolta per campo, resa %, litri olio stimati |
+| 🏺 Vendite | Registro ricavi olive e olio con calcolo automatico |
+
+---
+
+## 🗄️ Database
+
+**Host (interno):** `db:3306`  
+**Database:** `agromanager`  
+**User:** `root` / **Password:** `root`
+
+Per accedere direttamente al DB:
+```bash
+docker exec -it agromanager-db-1 mysql -u root -proot agromanager
+```
+
+---
+
+## 🔧 Sviluppo
+
+I file nella cartella `src/` sono montati come **volume Docker**: ogni modifica è immediatamente visibile senza rebuild.
+
+Per modificare il DB schema, edita `init.sql` poi esegui:
+```bash
+docker-compose down -v && docker-compose up -d --build
+```
+
+---
+
+*AgroManager v1.0 — Fatto con 🫒 per l'olivicoltura italiana*
